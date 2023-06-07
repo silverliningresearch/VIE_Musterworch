@@ -1,17 +1,17 @@
 <html>
     <head>
-		<title>BRU Daily plan</title>
+		<title>Daily plan - VIE Musterworch</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     
 		<script src="data/Quota_Data.js"></script>
     <script src="data/invalid_cases.js"></script>
+    <script src="search_list/VIE_flight_list.js"></script>
 
     <script src="scripts/PrepareData.js"></script>
 		<script src="scripts/CalculateData.js"></script>
 		
     <script type="text/javascript" src="https://silverliningresearch.github.io/daily_plan_data_bru/BRU_PROF/data/interview_data.js"></script> 
-    <script type="text/javascript" src="https://silverliningresearch.github.io/daily_plan_data_bru/BRU_PROF/data/BRU_flight_list_daily.js"></script> 
-
+    
     <style>
       .table-font {
         font-size: 16px;
@@ -48,10 +48,10 @@
         //data.addColumn('string', 'Time');
         data.addColumn('string', 'Flight');
         data.addColumn('string', 'To');
-        data.addColumn('string', 'Via');
-        data.addColumn('string', 'Gate Zone');
-        data.addColumn('string', 'Gate Number');
-        data.addColumn('string', 'DOOP');
+       // data.addColumn('string', 'Via');
+       // data.addColumn('string', 'Gate Zone');
+       // data.addColumn('string', 'Gate Number');
+       // data.addColumn('string', 'DOOP');
         data.addColumn('number', 'Remaining Flights');
         data.addColumn('number', 'Quota');
         data.addColumn('number', 'Completed');
@@ -66,7 +66,8 @@
           data.addRows([[
               row.Date_Time, 
               //row.Date, row.Time,
-              row.Flight, row.Dest, row.Next, row.GateZone, row.GateNumber, row.doop, 
+              row.Flight, row.Dest,
+              // row.Next, row.GateZone, row.GateNumber, row.doop, 
               Number(row.remaining_flights), Number(row.Quota), Number(row.Completed), Number(row.Difference), 
               Number(row.Completed_percent), 
               Number(row.Prioritisation_score), 
@@ -95,10 +96,10 @@
         var options = {
           //'allowHtml': true, 
           //'cssClassNames': {font: 'large' },
-          'filterColumnLabel': 'Gate Zone',
+          'filterColumnLabel': 'To',
           "ui": {"label": "", 
                 "labelStacking": 'horizotal',
-                "caption": "Select Gate Zone",
+                "caption": "Select Destination:",
                 }
         };
         
@@ -140,7 +141,7 @@
     </script>
   </head>
   <body>
-		<h1>Daily Plan – BRU PS Survey</h1>
+		<h1>Daily plan - VIE Musterworch</h1>
     <h4 id="overall_status"></h4>
     <h4 id="download_time"></h4>
     <div id="dashboard_div">

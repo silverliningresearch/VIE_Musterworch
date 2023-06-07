@@ -61,16 +61,16 @@ function initCurrentTimeVars() {
  
   switch(currentQuarter) {
     case "2023-Q2":
-      total_quota = 17000;
+      total_quota = 2000;
       break;
     case "2023-Q3":
-      total_quota = 17000;
+      total_quota = 2000;
       break;
     case "2023-Q4":
       total_quota = 13000;
       break;      
     default:
-      total_quota = 1000;
+      total_quota = 2000;
       break;
   }
 }
@@ -127,7 +127,7 @@ function prepareInterviewData() {
   removed_ids_data = JSON.parse(removed_ids);
 
   var interview_data_temp  = JSON.parse(interview_data_raw);
-  var flight_list_temp  = JSON.parse(BRU_FlightRawList_Daily);
+  var flight_list_temp  = JSON.parse(VIE_FlightRawList);
 
   initCurrentTimeVars();	
   
@@ -135,7 +135,7 @@ function prepareInterviewData() {
   quota_data = [];
   quota_data.length = 0;
   for (i = 0; i < quota_data_temp.length; i++) {
-    if (quota_data_temp[i].Quarter == currentQuarter)
+    //if (quota_data_temp[i].Quarter == currentQuarter)
     {
       quota_data.push(quota_data_temp[i]);
     }
@@ -204,6 +204,7 @@ function prepareInterviewData() {
       this_month_flight_list.push(flight);
     }	
     
+
     //only get today & not departed flight
     if (((currentDate == flight.Date) && notDeparted(flight.Time))
         || (nextDate == flight.Date))
@@ -217,6 +218,10 @@ function prepareInterviewData() {
 			   
   }
   
+  
+  console.log("currentDate: ", currentDate);
+  
+  console.log("this_month_flight_list: ", this_month_flight_list);
     //add quota data
     //empty the list
   daily_plan_data = [];
@@ -233,5 +238,6 @@ function prepareInterviewData() {
        }
     }
   }
-  console.log("currentQuarter: ", currentQuarter);
+  console.log("today_flight_list: ", today_flight_list);
+  console.log("Quota: ", quota_data);
 }

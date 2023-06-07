@@ -1,16 +1,16 @@
 <html>
   <head>
-		<title>BRU Quota report</title>
+		<title>Quota Report - VIE Musterworch</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     
 		<script src="data/Quota_Data.js"></script>
     <script src="data/invalid_cases.js"></script>
+    <script src="search_list/VIE_flight_list.js"></script>
+
     <script src="scripts/PrepareData.js"></script>
     <script src="scripts/CalculateData.js"></script>
 		
     <script type="text/javascript" src="https://silverliningresearch.github.io/daily_plan_data_bru/BRU_PROF/data/interview_data.js"></script> 
-    <script type="text/javascript" src="https://silverliningresearch.github.io/daily_plan_data_bru/BRU_PROF/data/BRU_flight_list_daily.js"></script> 
-
     <style>
       .table-font {
         font-size: 16px;
@@ -59,7 +59,7 @@
         //define header
         data.addColumn('string', 'Flight - To');
         data.addColumn('string', 'Dest');
-        data.addColumn('string', 'DOOP [Mon-Sun]');
+        //data.addColumn('string', 'DOOP [Mon-Sun]');
         data.addColumn('number', 'Remaining Flights');
         data.addColumn('number', 'Quota');
         data.addColumn('number', 'Completed');
@@ -73,7 +73,7 @@
           [
             row.Flight_To,
             row.Dest, 
-            row.doop,
+            //row.doop,
             Number(row.remaining_flights),
             Number(row.Quota),
             Number(row.Completed), 
@@ -132,19 +132,9 @@
     </script>
   </head>
   <body>
-		<h1>Quota Report - BRU PS Survey</h1>
+		<h1>Quota Report - VIE Musterworch</h1>
     <h4 id="overall_status"></h4>
     <h4 id="download_time"></h4>
-
-    <div class="year_month">
-      <label for="year_month">Data collection period:</label>
-      <select id="year_month" onchange="drawTable()">
-        <option value="current-quarter">current quarter
-        <option value="2023-Q3">2023-Q3
-        <option value="2023-Q2">2023-Q2
-      </select>
-    </div>
-    <br>
 
     <div id="dashboard_div">
       <!--Divs that will hold each control and chart-->
