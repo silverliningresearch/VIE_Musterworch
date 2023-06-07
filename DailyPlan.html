@@ -1,0 +1,156 @@
+<html>
+    <head>
+		<title>BRU Daily plan</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    
+		<script src="data/Quota_Data.js"></script>
+    <script src="data/invalid_cases.js"></script>
+
+    <script src="scripts/PrepareData.js"></script>
+		<script src="scripts/CalculateData.js"></script>
+		
+    <script type="text/javascript" src="https://silverliningresearch.github.io/daily_plan_data_bru/BRU_PROF/data/interview_data.js"></script> 
+    <script type="text/javascript" src="https://silverliningresearch.github.io/daily_plan_data_bru/BRU_PROF/data/BRU_flight_list_daily.js"></script> 
+
+    <style>
+      .table-font {
+        font-size: 16px;
+        /* height: 18px; */
+      }
+
+      .filter-font {
+        font-size: 16px;
+        /* height: 18px; */
+      }
+    </style>
+
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      function isNextDay()
+      {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+
+        //?nextday=true
+        return(urlParams.has('nextday'));
+      }
+      //google.charts.load('current', {'packages':['table']});
+      google.charts.load('current', {'packages':['table','corechart', 'controls']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        CalculateAirportAirLineReport();
+        var data = new google.visualization.DataTable();
+
+        //define header
+        data.addColumn('string', 'Date Time');
+        //data.addColumn('string', 'Date');
+        //data.addColumn('string', 'Time');
+        data.addColumn('string', 'Flight');
+        data.addColumn('string', 'To');
+        data.addColumn('string', 'Via');
+        data.addColumn('string', 'Gate Zone');
+        data.addColumn('string', 'Gate Number');
+        data.addColumn('string', 'DOOP');
+        data.addColumn('number', 'Remaining Flights');
+        data.addColumn('number', 'Quota');
+        data.addColumn('number', 'Completed');
+				data.addColumn('number', 'Missing');
+        data.addColumn('number', 'Completed %');
+        data.addColumn('number', 'Priority Score');
+        data.addColumn('number', 'Priority');
+        
+        //add data
+        for (i = 0; i < daily_plan_data.length; i++) {
+          var row = daily_plan_data[i];
+          data.addRows([[
+              row.Date_Time, 
+              //row.Date, row.Time,
+              row.Flight, row.Dest, row.Next, row.GateZone, row.GateNumber, row.doop, 
+              Number(row.remaining_flights), Number(row.Quota), Number(row.Completed), Number(row.Difference), 
+              Number(row.Completed_percent), 
+              Number(row.Prioritisation_score), 
+              Number(row.Priority)]]);
+			  }	
+
+        //highlight priority one
+        var priority_col = data.getNumberOfColumns()-1; //last one
+        for (var i = 0; i < data.getNumberOfRows(); i++) {
+          for (j=0; j < data.getNumberOfColumns(); j++) {
+            if (data.getValue(i, priority_col) ==1) 
+            {
+              data.setProperty(i, j, 'style', 'background-color:#FFCCCB');
+            }
+            else {
+              //data.setProperty(i, j, 'style', 'background-color:white; font-size: 15px');
+            }
+          }
+        }
+
+        //create a dashboard.
+        var dashboard = new google.visualization.Dashboard(
+        document.getElementById('dashboard_div'));
+
+        //create fiter
+        var options = {
+          //'allowHtml': true, 
+          //'cssClassNames': {font: 'large' },
+          'filterColumnLabel': 'Gate Zone',
+          "ui": {"label": "", 
+                "labelStacking": 'horizotal',
+                "caption": "Select Gate Zone",
+                }
+        };
+        
+        var tableFilter = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'filter_div',
+          'options': options
+        });
+
+        // Create table
+        var tableChart = new google.visualization.ChartWrapper({
+          'chartType': 'Table',
+          'containerId': 'table_div',
+          'options': {
+            'allowHtml': true, 
+            'cssClassNames': {tableCell: 'table-font', headerRow: 'table-font', headerCell: 'googleHeaderCell' },
+            'sortColumn': 0, //time
+            'showRowNumber': false, 'width': '100%', 'height': '100%'
+          }
+        });
+
+        dashboard.bind(tableFilter, tableChart);
+
+        var view = new google.visualization.DataView(data);
+        view.hideColumns([priority_col, priority_col-1]); //unncessary columns: Date_Tome & priority
+        //document.getElementById("filter_div").style.display = "none";
+        dashboard.draw(view);
+
+        //Update time info
+        document.getElementById("download_time").innerHTML = "Data updated: " + download_time;
+
+        //overall_status
+        var overall_status = "Total quota: " + total_quota;
+        overall_status += " - Total completed: " + total_completed;
+        overall_status += " - Quota completed: " + total_quota_completed;
+        overall_status += " (" + total_completed_percent + "%)";
+        document.getElementById("overall_status").innerHTML = overall_status;
+      }
+    </script>
+  </head>
+  <body>
+		<h1>Daily Plan – BRU PS Survey</h1>
+    <h4 id="overall_status"></h4>
+    <h4 id="download_time"></h4>
+    <div id="dashboard_div">
+      <!--Divs that will hold each control and chart-->
+      <div id="filter_div" style="font-size: 15px"> </div>
+
+      <!-- <div id="2017" style="z-index:1;position: fixed;top: 70px;left: 850px;font-family: Arial;font-size: 13;color:red;">2017</div> -->
+      </br>
+      <div id="table_div"></div>
+    </div>
+
+  </body>
+</html>
