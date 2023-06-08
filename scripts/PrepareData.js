@@ -123,7 +123,7 @@ function isvalid_id(id)
   return valid;
 }
 function prepareInterviewData() {
-  var quota_data_temp = JSON.parse(Flight_To_Quota);
+  var quota_data_temp = JSON.parse(VIE_Flight_To_Quota);
   removed_ids_data = JSON.parse(removed_ids);
 
   var interview_data_temp  = JSON.parse(interview_data_raw);
@@ -220,10 +220,9 @@ function prepareInterviewData() {
   
   
   console.log("currentDate: ", currentDate);
-  
-  console.log("this_month_flight_list: ", this_month_flight_list);
-    //add quota data
-    //empty the list
+    
+  //add quota data
+  //empty the list
   daily_plan_data = [];
   daily_plan_data.length = 0;
   
@@ -238,6 +237,4 @@ function prepareInterviewData() {
        }
     }
   }
-  console.log("today_flight_list: ", today_flight_list);
-  console.log("Quota: ", quota_data);
 }

@@ -4,12 +4,28 @@ function CalculateAirportAirLineReport() {
   CalculateDOOP(); //add DOOP to quota list
 
   var daily_plan_data_temp;
+  var other_dest_completed = 0;
   daily_plan_data_temp = [];
   daily_plan_data_temp.length = 0;
   
   total_completed = 0;
   total_quota_completed = 0;
 
+  //special for VIE
+  for (i = 0; i < interview_data.length; i++) {
+    total_completed++;
+    var found = false;
+
+    for (j = 0; j < quota_data.length; j++) {
+      if (quota_data[j].Flight_To.toUpperCase() == interview_data[i].Flight_To.toUpperCase()) 
+      { 
+        found = true;
+      }
+    }
+
+    if (!found) other_dest_completed++;
+  }
+  
   for (i = 0; i < quota_data.length; i++) {
     row = quota_data[i];
     row.Completed = 0;
@@ -25,7 +41,6 @@ function CalculateAirportAirLineReport() {
     row.Prioritisation_score = row.Difference_percent*row.Difference/100;
 
     row.Completed_percent =(100*(row.Completed/row.Quota)).toFixed(0);
-    total_completed = total_completed + row.Completed;
         
     if ( row.Difference > 0) { //over quota
       total_quota_completed = total_quota_completed +row.Quota*1;
@@ -36,6 +51,10 @@ function CalculateAirportAirLineReport() {
       }
     }
 
+    if (row.Flight_To.toUpperCase() =="_OTHER")
+    {
+      row.Completed = other_dest_completed;
+    }
   }
 
   for (i = 0; i < daily_plan_data.length; i++) {//Flight_To_report.length;
@@ -70,7 +89,7 @@ function CalculateAirportAirLineReport() {
     row = daily_plan_data_temp[i];
     row.Priority = 0;
     daily_plan_data.push(row);
-    if((i< daily_plan_data_temp.length*0.25 ) || (row.remaining_flights<4))
+    if((i< daily_plan_data_temp.length*0.25 ) || (row.remaining_flights<5))
     {
       row.Priority = 1;
     }
