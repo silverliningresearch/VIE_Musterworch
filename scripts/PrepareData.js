@@ -156,6 +156,7 @@ function prepareInterviewData() {
 
     if ((interview.InterviewState == "Completed")
     //&& (currentMonth == interview_month)  
+    && (interview.InterviewerID != 999) 
     && ((currentQuarter == interview_quarter))
     )
     {
