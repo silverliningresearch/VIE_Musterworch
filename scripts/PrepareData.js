@@ -36,7 +36,7 @@ function initCurrentTimeVars() {
 
   currentDate = [day, month, year].join('-');
   currentYear = year;
-  currentMonth = month; //[month, year].join('-');;
+  currentMonth = '06'//month; //[month, year].join('-');;
   currentQuarter = getQuarterFromMonth(currentMonth, currentYear);
 
   //////////
